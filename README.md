@@ -1,8 +1,5 @@
 # Futi — Multi-Agent Architecture for Growth Marketing
 
-> Operational architecture document for Futi and its six specialized agents.  
-> Format: GitHub-compatible Markdown.
-
 ## 1. What Futi Is
 
 Futi is a multi-agent orchestrator designed for growth marketing agencies. It is not a general-purpose chatbot and it does not replace the team. Futi receives requests, retrieves the right client context, coordinates specialized capabilities, uses approved services, and returns traceable deliverables.

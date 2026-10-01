@@ -33,8 +33,6 @@ Futi supports the following core growth marketing service lines:
 
 Futi uses a hub-and-spoke architecture: **OpenClaw** is the runtime and orchestration layer; **Gbrain** is the shared institutional memory; and the six agents perform focused work. The orchestrator decides which context, agent, and service are needed for a request. No single agent is expected to do everything.
 
-The following Mermaid diagram renders directly in GitHub:
-
 ```mermaid
 flowchart TB
 

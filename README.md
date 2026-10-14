@@ -25,46 +25,62 @@ This model is designed for a retainer-based agency. A request may begin with a c
 ```mermaid
 flowchart TB
 
-subgraph Slack["Slack User Interface"]
-Request["User Request"]
-Response["Bot Response"]
-Notification["Scheduled Performance Notification"]
-end
+    subgraph INTERFACE["Communication Interfaces"]
+        Slack["Slack"]
+        Email["Email"]
+        Other["Other Interfaces"]
+    end
 
-Cron["Cron Jobs<br/>Daily · Weekly · Monthly"]
+    subgraph CORE["Futi Core"]
+        OpenClaw["OpenClaw<br/>Runtime & Orchestration"]
 
-OpenClaw["OpenClaw: Multi-Agent Orchestrator"]
+        subgraph AGENTS["Specialized Agents"]
+            Ops["Client Intelligence<br/>& Operations"]
+            Research["Research"]
+            SEO["SEO / AEO"]
+            Content["Content"]
+            Performance["Performance"]
+            Design["Design"]
+            Sales["Sales / Prospecting"]
+        end
 
-Request --> OpenClaw
-OpenClaw --> Response
-Cron --> OpenClaw
-OpenClaw --> Notification
+        Gbrain[("Gbrain<br/>Shared Institutional Memory")]
+    end
 
-Research["Research"]
-SEO["SEO / AEO"]
-Content["Content"]
-Performance["Performance"]
-Design["Design"]
-Sales["Sales / Prospecting"]
-Operations["Operations"]
+    Cron["Scheduled Automations<br/>Daily · Weekly · Monthly"]
 
-OpenClaw --> Research
-OpenClaw --> SEO
-OpenClaw --> Content
-OpenClaw --> Performance
-OpenClaw --> Design
-OpenClaw --> Sales
-OpenClaw --> Operations
+    Services[("Third Party Services<br/>Data Sources · APIs · Tools")]
 
-Gbrain["Gbrain: Shared Institutional Memory"]
+    Slack <--> OpenClaw
+    Email <--> OpenClaw
+    Other <--> OpenClaw
 
-Research --> Gbrain
-SEO --> Gbrain
-Content --> Gbrain
-Performance --> Gbrain
-Design --> Gbrain
-Sales --> Gbrain
-Operations --> Gbrain
+    Cron --> OpenClaw
+
+    OpenClaw <--> Ops
+    OpenClaw <--> Research
+    OpenClaw <--> SEO
+    OpenClaw <--> Content
+    OpenClaw <--> Performance
+    OpenClaw <--> Design
+    OpenClaw <--> Sales
+
+    Ops <--> Gbrain
+    Research <--> Gbrain
+    SEO <--> Gbrain
+    Content <--> Gbrain
+    Performance <--> Gbrain
+    Design <--> Gbrain
+    Sales <--> Gbrain
+
+    OpenClaw <--> Services
+    Ops <--> Services
+    Research <--> Services
+    SEO <--> Services
+    Content <--> Services
+    Performance <--> Services
+    Design <--> Services
+    Sales <--> Services
 ```
 
 Futi is built around three core components that work together to coordinate agents, manage institutional knowledge, and deliver results through a familiar interface.
@@ -106,7 +122,7 @@ OpenClaw connects these interfaces to external services and tools, enabling agen
 
 **Why it matters:** Futi integrates into existing workflows, connects intelligence with execution, and delivers timely insights and actions without requiring users to switch between multiple tools.
 
-### 2.3 Skills and Scheduled Automations
+### 2.4 Skills and Scheduled Automations
 
 Agents do not depend on one API. Each combines reusable **skills** with connectors that read data or execute authorized actions. This makes the system modular: a source can be added or changed without rebuilding the agent itself.
 

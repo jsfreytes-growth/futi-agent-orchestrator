@@ -2,12 +2,15 @@
 
 ## 1. What Futi Is
 
-Futi is a multi-agent orchestrator designed for growth marketing agencies. It is not a general-purpose chatbot and it does not replace the team. Futi receives requests, retrieves the right client context, coordinates specialized capabilities, uses approved services, and returns traceable deliverables.
+Futi is a multi-agent orchestrator designed for growth marketing agencies. Futi receives requests, retrieves the right client context, coordinates specialized capabilities, uses approved services, and returns traceable deliverables.
 
-Futi works through **six specialized agents**:
+Beyond improving internal efficiency and execution, Futi enables real time reporting and proactive client communication through each client’s preferred channels, including Slack, email, and other integrated platforms. By delivering timely insights, performance updates, and actionable recommendations directly to clients, Futi elevates service quality, increases transparency, and enables agencies to deliver a more proactive, responsive, and data driven client experience.
+
+Futi works through **seven specialized agents**:
 
 | Agent | Main Function |
 |---|---|
+| Client Intelligence & Operations Agent | Maintains client and team context, captures meeting notes and decisions, keeps institutional knowledge up to date, and coordinates project execution. Manages tasks, tracks dependencies, identifies blockers, and proactively notifies the team of relevant changes and required actions. |
 | Research Agent | Conducts market, customer, and competitor research across multiple data sources. Synthesizes findings into structured intelligence that informs strategy and decision making. |
 | SEO / AEO Agent | Analyzes search demand, content gaps, keywords, and AI search visibility. Optimizes content and technical signals to improve rankings and inclusion across search and answer engines. |
 | Content Agent | Converts research and strategic inputs into structured content across channels and formats. Uses audience, intent, and performance data to continuously improve content quality and relevance. |
@@ -17,18 +20,7 @@ Futi works through **six specialized agents**:
 
 This model is designed for a retainer-based agency. A request may begin with a client, campaign, meeting, metric, task, or prospect; the resulting knowledge is returned to institutional memory rather than remaining in a chat, document, or one person’s head.
 
-Futi supports the following core growth marketing service lines:
-
-- Conversion rate optimization (CRO) and funnel design.
-- Paid media management and optimization.
-- SEO, AEO, and AI-search visibility.
-- Organic, social, paid, and web content.
-- Analytics, reporting, and client intelligence.
-- Prospecting and commercial audits.
-
-## 2. Architecture
-
-Futi uses a hub-and-spoke architecture: **OpenClaw** is the runtime and orchestration layer; **Gbrain** is the shared institutional memory; and the six agents perform focused work. The orchestrator decides which context, agent, and service are needed for a request. No single agent is expected to do everything.
+## 2. Core Architecture
 
 ```mermaid
 flowchart TB
@@ -54,6 +46,7 @@ Content["Content"]
 Performance["Performance"]
 Design["Design"]
 Sales["Sales / Prospecting"]
+Operations["Operations"]
 
 OpenClaw --> Research
 OpenClaw --> SEO
@@ -61,6 +54,7 @@ OpenClaw --> Content
 OpenClaw --> Performance
 OpenClaw --> Design
 OpenClaw --> Sales
+OpenClaw --> Operations
 
 Gbrain["Gbrain: Shared Institutional Memory"]
 
@@ -70,19 +64,11 @@ Content --> Gbrain
 Performance --> Gbrain
 Design --> Gbrain
 Sales --> Gbrain
+Operations --> Gbrain
 ```
 
-### Scheduled performance notifications
+Futi is built around three core components that work together to coordinate agents, manage institutional knowledge, and deliver results through a familiar interface.
 
-OpenClaw can run cron tasks that generate performance-related notifications in Slack on a **daily, weekly, or monthly** cadence. These notifications can cover **organic content** or **paid media** performance for each client.
-
-### Why this separation matters
-
-- **Specialization:** every agent has a defined mission, inputs, outputs, tools, and quality controls.
-- **Shared memory:** useful research, decisions, and learnings are available to the full system.
-- **Traceability:** significant claims can be connected to a source, client, and date.
-- **Multi-client scale:** the same architecture can support Kadance, Blue Spirit, Rodrigo Castillo, and future clients; the context and authorized connections vary by client.
-- **Human control:** the team owns prioritization and final decisions, especially for sensitive, public, or external-facing work.
 
 ### 2.1 OpenClaw: runtime and orchestration
 
@@ -112,9 +98,17 @@ Gbrain is the practical implementation of a **Client Intelligence Layer**:
 
 Operational rule: for a relevant entity, Futi checks Gbrain first. External sources fill gaps; they do not replace internal context. Confirmed new information is written back with attribution, owner, and date.
 
-### 2.3 Skills and connectors: capabilities and data
+### 2.3 Communication Interface
 
-Agents do not depend on one API. Each combines reusable **skills** — operational procedures — with connectors that read data or execute authorized actions. This makes the system modular: a source can be added or changed without rebuilding the agent itself.
+Futi interacts with team members and clients through flexible interfaces such as Slack, email, or other connected platforms, adapting to each user's workflow and communication preferences. Through these interfaces, users can request work, receive updates, access specialized agents, and get proactive notifications.
+
+OpenClaw connects these interfaces to external services and tools, enabling agents to retrieve data, update documentation, manage projects, and execute authorized actions. It also supports scheduled tasks, such as daily, weekly, or monthly performance reports and operational alerts.
+
+**Why it matters:** Futi integrates into existing workflows, connects intelligence with execution, and delivers timely insights and actions without requiring users to switch between multiple tools.
+
+### 2.3 Skills and Scheduled Automations
+
+Agents do not depend on one API. Each combines reusable **skills** with connectors that read data or execute authorized actions. This makes the system modular: a source can be added or changed without rebuilding the agent itself.
 
 Services used across the operating system include:
 
@@ -131,11 +125,33 @@ Services used across the operating system include:
 - **Figma:** design files and visual systems when required.
 - **OpenAI:** language models and embedding-based retrieval.
 
-Availability and write permissions vary by client and connector. A connection is never assumed to be writable simply because it exists.
+OpenClaw can run cron tasks that generate performance-related notifications in Slack on a **daily, weekly, or monthly** cadence. These notifications can cover **organic content** or **paid media** performance for each client.
 
-## 3. The Six Agents
+## 3. The Seven Agents
 
-### 3.1 Research Agent
+### 3.1 Client Intelligence & Operations Agent
+
+**Role:** maintains a comprehensive understanding of clients, business objectives, team operations, and project status. Connects institutional knowledge with daily execution, ensuring decisions, documentation, tasks, and dependencies remain aligned.
+
+**What it does**
+
+- Maintains client profiles, business objectives, strategic priorities, and historical decisions.
+- Maintains internal knowledge about team members, roles, responsibilities, and operating procedures.
+- Captures meeting notes, decisions, commitments, and action items, connecting them to the relevant clients and projects.
+- Tracks documentation changes, updates shared knowledge, and notifies affected team members.
+- Creates and updates tasks in project management tools, tracks progress, and monitors deadlines.
+- Identifies blockers, missing inputs, and project dependencies, notifying owners when action is required.
+- Provides relevant client and project context to specialized agents before execution.
+
+**Inputs:** Meeting transcripts, client documentation, Slack conversations, project boards, team information, and Gbrain context.
+
+**Outputs:** Meeting notes, updated client knowledge, project tasks, status summaries, decision logs, and proactive notifications.
+
+**Primary services:** Gbrain, Slack, Google Drive, Google Docs, Fathom, Asana, and OpenClaw.
+
+**Relationship to other agents:** provides the contextual and operational foundation for all specialized agents, ensuring their work aligns with client objectives, incorporates historical decisions, and contributes to coordinated project execution.
+
+### 3.2 Research Agent
 
 **Role:** turns market, competitor, ICP, trend, and opportunity questions into usable research.
 
@@ -155,7 +171,7 @@ Availability and write permissions vary by client and connector. A connection is
 
 **Relationship to other agents:** provides the evidence base for SEO / AEO, Content, Performance, and Sales / Prospecting.
 
-### 3.2 SEO / AEO Agent
+### 3.3 SEO / AEO Agent
 
 **Role:** owns discoverability across keywords, editorial and technical SEO, and visibility in AI-assisted search experiences.
 
@@ -175,7 +191,7 @@ Availability and write permissions vary by client and connector. A connection is
 
 **Relationship to other agents:** receives research and supplies priorities to Content, Performance, and Sales / Prospecting.
 
-### 3.3 Content Agent
+### 3.4 Content Agent
 
 **Role:** turns strategy, research, and performance learning into organic, paid, and web content.
 
@@ -195,7 +211,7 @@ Availability and write permissions vary by client and connector. A connection is
 
 **Relationship to other agents:** consumes Research, SEO / AEO, and Performance; sends production-ready copy to Design and publishing workflows.
 
-### 3.4 Performance Agent
+### 3.5 Performance Agent
 
 **Role:** turns organic and paid data into decisions, rather than dashboards alone.
 
@@ -215,7 +231,7 @@ Availability and write permissions vary by client and connector. A connection is
 
 **Relationship to other agents:** identifies messages, formats, keywords, and audiences to repeat, adjust, or stop.
 
-### 3.5 Design Agent
+### 3.6 Design Agent
 
 **Role:** reduces friction between approved copy and visual production while respecting each client’s design system.
 
@@ -235,7 +251,7 @@ Availability and write permissions vary by client and connector. A connection is
 
 **Relationship to other agents:** receives from Content and delivers a clearer handoff to the design and publishing process.
 
-### 3.6 Sales / Prospecting Agent
+### 3.7 Sales / Prospecting Agent
 
 **Role:** turns a target company into a clear, evidence-based commercial audit.
 
@@ -294,7 +310,7 @@ The architecture includes controls so automation improves quality rather than di
 
 ## 6. Current State and Evolution
 
-The current system implements the foundational architecture: Futi as orchestrator, OpenClaw as the runtime, Gbrain as shared memory, six specialized agent domains, Slack as the main interface, and an operating set of marketing and knowledge connectors.
+The current system implements the foundational architecture: Futi as orchestrator, OpenClaw as the runtime, Gbrain as shared memory, seven specialized agent domains, Slack as the main interface, and an operating set of marketing and knowledge connectors.
 
 The next stage is not a “super-agent.” It is the continued improvement of each domain: more authorized connectors, stronger client data schemas, scheduled automations, and better quality controls. This modular design supports additional clients and capabilities without losing the core operating principle: accumulated knowledge, verifiable evidence, and humans accountable for decisions.
 
